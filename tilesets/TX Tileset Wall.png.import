@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://50j6sc23wkkt"
-path="res://.godot/imported/idle_right.PNG-b3e3342445c2ee28795eb7526624fdd2.ctex"
+uid="uid://bmfmchffo2bij"
+path="res://.godot/imported/TX Tileset Wall.png-d69b92bf44b54297c2b01ebc34fa3818.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://idle_right.PNG"
-dest_files=["res://.godot/imported/idle_right.PNG-b3e3342445c2ee28795eb7526624fdd2.ctex"]
+source_file="res://tilesets/TX Tileset Wall.png"
+dest_files=["res://.godot/imported/TX Tileset Wall.png-d69b92bf44b54297c2b01ebc34fa3818.ctex"]
 
 [params]
 

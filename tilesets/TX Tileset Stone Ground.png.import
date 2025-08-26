@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqtw7g212br7p"
-path="res://.godot/imported/idle_left.PNG-63ed0fa249f81bec4d8dc402262540cf.ctex"
+uid="uid://bhhg46tlf12jw"
+path="res://.godot/imported/TX Tileset Stone Ground.png-71d7b675cc7cf4dde6e5780d528ccb9a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://idle_left.PNG"
-dest_files=["res://.godot/imported/idle_left.PNG-63ed0fa249f81bec4d8dc402262540cf.ctex"]
+source_file="res://tilesets/TX Tileset Stone Ground.png"
+dest_files=["res://.godot/imported/TX Tileset Stone Ground.png-71d7b675cc7cf4dde6e5780d528ccb9a.ctex"]
 
 [params]
 
@@ -25,7 +25,7 @@ mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
-process/fix_alpha_border=true
+process/fix_alpha_border=false
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
