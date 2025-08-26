@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Gelatinous Blobulous"
-run/main_scene="uid://d22364yulu7ae"
+run/main_scene="uid://cqxd2237cgwtm"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
