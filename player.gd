@@ -105,7 +105,7 @@ func move(direction):
 		ray.force_raycast_update()
 		
 		var cell = map.local_to_map(position + inputs[direction])
-		if !ray.is_colliding() or (ray.is_colliding() and oneway.get_cell_source_id(cell) != -1 and direction=="down"): # checks if front of character is passable or impassable
+		if !ray.is_colliding() or (oneway.get_cell_source_id(cell) != -1 and direction=="down"): # checks if front of character is passable or impassable
 			moving = true
 			is_colliding = false
 			
