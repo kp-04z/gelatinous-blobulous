@@ -363,9 +363,8 @@ script = ExtResource("1_onrkg")
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_bfour")
-animation = &"move_up"
+animation = &"idle_down"
 autoplay = "idle_down"
-frame_progress = 0.601617
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_onrkg")
