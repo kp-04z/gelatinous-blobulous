@@ -9,6 +9,7 @@ var forced_direction: Vector2 = Vector2.ZERO
 var last_direction = "down"
 var sliding_on_ice: bool = false
 var is_colliding = false
+#var can_tp = true
 
 @onready var sprite = $Sprite2D
 @onready var ray = $RayCast2D
@@ -82,7 +83,7 @@ func _physics_process(delta: float) -> void:
 
 	# Otherwise: player input
 	for direction in inputs.keys():
-		if Input.is_action_just_pressed(direction):
+		if Input.is_action_pressed(direction):
 			forced_direction = inputs[direction] 
 			last_direction = direction
 			

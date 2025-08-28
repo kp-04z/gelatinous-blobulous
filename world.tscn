@@ -1,15 +1,17 @@
-[gd_scene load_steps=30 format=4 uid="uid://d22364yulu7ae"]
+[gd_scene load_steps=36 format=4 uid="uid://d22364yulu7ae"]
 
 [ext_resource type="Texture2D" uid="uid://dq3du1xt3tkp6" path="res://IMG_3222.PNG" id="1_036b0"]
 [ext_resource type="Texture2D" uid="uid://bhhg46tlf12jw" path="res://tilesets/TX Tileset Stone Ground.png" id="1_f3sb7"]
 [ext_resource type="Texture2D" uid="uid://brsufgje3oqbl" path="res://water.PNG" id="1_pkg7o"]
 [ext_resource type="Texture2D" uid="uid://ssyg1ihacij2" path="res://tilesets/TX Tileset Grass.png" id="1_tlwt5"]
 [ext_resource type="Texture2D" uid="uid://bya5u5uwfhqia" path="res://tilesets/conveyor_up.png" id="1_wse8f"]
+[ext_resource type="Texture2D" uid="uid://diy4bit1leu8l" path="res://portalend.PNG" id="2_70uel"]
 [ext_resource type="Texture2D" uid="uid://bmfmchffo2bij" path="res://tilesets/TX Tileset Wall.png" id="3_aqk2v"]
 [ext_resource type="PackedScene" uid="uid://c5womkqotgf6u" path="res://player.tscn" id="4_aqk2v"]
 [ext_resource type="Texture2D" uid="uid://bq3pblxmfdq3b" path="res://IMG_3223.PNG" id="6_gbfbk"]
 [ext_resource type="Texture2D" uid="uid://btvncw62omh3q" path="res://tilesets/ice.png" id="6_k3n1d"]
 [ext_resource type="Texture2D" uid="uid://k6pogg0i0v2" path="res://tilesets/conveyor_down.png" id="7_ic0uy"]
+[ext_resource type="Texture2D" uid="uid://c8s85ntjw3rt" path="res://portalsource.PNG" id="8_hiqwa"]
 [ext_resource type="Texture2D" uid="uid://ch833q37va3li" path="res://tilesets/conveyor_left.png" id="8_k3n1d"]
 [ext_resource type="Texture2D" uid="uid://df8s5av2hqgy2" path="res://tilesets/conveyor_right.png" id="9_2o6r5"]
 
@@ -23,6 +25,11 @@ texture_region_size = Vector2i(32, 32)
 0:0/animation_frame_3/duration = 0.5
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wukud"]
+texture = ExtResource("2_70uel")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2o6r5"]
 texture = ExtResource("7_ic0uy")
@@ -65,6 +72,11 @@ texture = ExtResource("6_k3n1d")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_il2jm"]
+texture = ExtResource("8_hiqwa")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
 [sub_resource type="TileSet" id="TileSet_wse8f"]
 tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
@@ -74,6 +86,8 @@ sources/3 = SubResource("TileSetAtlasSource_70uel")
 sources/4 = SubResource("TileSetAtlasSource_cbp6q")
 sources/5 = SubResource("TileSetAtlasSource_26xuy")
 sources/6 = SubResource("TileSetAtlasSource_bc84e")
+sources/1 = SubResource("TileSetAtlasSource_wukud")
+sources/7 = SubResource("TileSetAtlasSource_il2jm")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pkg7o"]
 texture = ExtResource("1_036b0")
@@ -543,6 +557,34 @@ sources/7 = SubResource("TileSetAtlasSource_udxuc")
 sources/8 = SubResource("TileSetAtlasSource_ikiii")
 sources/0 = SubResource("TileSetAtlasSource_pkg7o")
 
+[sub_resource type="GDScript" id="GDScript_k3n1d"]
+resource_name = "portal"
+script/source = "extends Area2D
+@export var landing_zone : Area2D
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+
+
+
+func _on_body_entered(body: Node2D) -> void:
+	#if not body.can_tp == true : return
+	#body.can_tp = false
+	var tp_point = landing_zone.get_node(\"Marker2D\").global_position
+	body.global_position = tp_point
+	#await get_tree().create_timer(1.00).timeout
+	#body.can_tp = true
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2o6r5"]
+size = Vector2(30, 30)
+
 [node name="World" type="Node2D"]
 
 [node name="Terrain" type="Node2D" parent="."]
@@ -587,5 +629,48 @@ texture_filter = 1
 tile_map_data = PackedByteArray("AAAMAAgABgAAAAAAAAAMAAcABgAAAAAAAAANAAcABgAAAAAAAAAOAAcABgAAAAAAAAAPAAcABgAAAAAAAAAQAAcABgAAAAAAAAAQAAgABgAAAAAAAAAPAAgABgAAAAAAAAAOAAgABgAAAAAAAAANAAgABgAAAAAAAAAcAAYABgAAAAAAAAAcAAcABgAAAAAAAAAcAAgABgAAAAAAAAAcAAkABgAAAAAAAAAbAAkABgAAAAAAAAAaAAkABgAAAAAAAAAZAAkABgAAAAAAAAAbAAoABgAAAAAAAAAcAAoABgAAAAAAAAAbAAgABgAAAAAAAAAaAAgABgAAAAAAAAAbAAcABgAAAAAAAAAdAAcABgAAAAAAAAAeAAcABgAAAAAAAAAfAAcABgAAAAAAAAAfAAgABgAAAAAAAAAgAAgABgAAAAAAAAAgAAkABgAAAAAAAAAfAAkABgAAAAAAAAAeAAkABgAAAAAAAAAdAAkABgAAAAAAAAAdAAgABgAAAAAAAAAeAAgABgAAAAAAAAAdAAoABgAAAAAAAAAeAAoABgAAAAAAAAAfAAoABgAAAAAAAAAdAAsABgAAAAAAAAAcAAsABgAAAAAAAAAeAAsABgAAAAAAAAAfAAsABgAAAAAAAAA=")
 tile_set = SubResource("TileSet_wse8f")
 
+[node name="portals" type="TileMapLayer" parent="Terrain"]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAARAAIAAwAAAAAAAAAQAAIAAwAAAAAAAAAWAAwABwAAAAAAAAASAAYABwAAAAAAAAATAAwAAQAAAAAAAAAVAAkAAQAAAAAAAAA=")
+tile_set = SubResource("TileSet_wse8f")
+
+[node name="Portal" type="Area2D" parent="Terrain" node_paths=PackedStringArray("landing_zone")]
+position = Vector2(566, 284)
+collision_layer = 2
+script = SubResource("GDScript_k3n1d")
+landing_zone = NodePath("../Portal2")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Terrain/Portal"]
+position = Vector2(153.875, 115.875)
+scale = Vector2(32.25, 32.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terrain/Portal"]
+position = Vector2(154, 116)
+shape = SubResource("RectangleShape2D_2o6r5")
+
+[node name="Marker2D" type="Marker2D" parent="Terrain/Portal"]
+position = Vector2(122, 20)
+
+[node name="Portal2" type="Area2D" parent="Terrain" node_paths=PackedStringArray("landing_zone")]
+position = Vector2(438, 92)
+collision_layer = 2
+script = SubResource("GDScript_k3n1d")
+landing_zone = NodePath("../Portal")
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Terrain/Portal2"]
+position = Vector2(153.875, 115.875)
+scale = Vector2(32.25, 32.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Terrain/Portal2"]
+position = Vector2(154, 116)
+shape = SubResource("RectangleShape2D_2o6r5")
+
+[node name="Marker2D" type="Marker2D" parent="Terrain/Portal2"]
+position = Vector2(186, 309)
+
 [node name="Player" parent="Terrain" instance=ExtResource("4_aqk2v")]
 position = Vector2(576, 324)
+collision_mask = 2
+
+[connection signal="body_entered" from="Terrain/Portal" to="Terrain/Portal" method="_on_body_entered"]
+[connection signal="body_entered" from="Terrain/Portal2" to="Terrain/Portal2" method="_on_body_entered"]
