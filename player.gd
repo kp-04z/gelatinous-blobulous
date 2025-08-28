@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-# initialise variables
+# initialises variables
 const tile_size = 32
 var moving = false
 var speed = 10
@@ -28,6 +28,7 @@ var inputs = {
 	"up": $"../conveyor_up",
 	"down": $"../conveyor_down"
 }
+
 
 # snaps player to center of tile
 func _ready():
@@ -94,6 +95,7 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 
+
 func move(direction):
 	if moving == false:
 		ray.target_position = inputs[direction] * tile_size
@@ -118,6 +120,7 @@ func move(direction):
 			sliding_on_ice = false
 			is_colliding = true
 
+
 func move_false():
 	moving = false
 	
@@ -130,9 +133,9 @@ func move_false():
 		
 	animate(last_direction)
 
+
 func animate(last_direction):
 	if moving && get_conveyor_direction() == Vector2.ZERO && !is_on_ice():
 		sprite.play("move_" + last_direction)
 	else:
 		sprite.play("idle_" + last_direction)
-	
