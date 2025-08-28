@@ -1,15 +1,16 @@
 extends CharacterBody2D
 
 # initialises variables
-const tile_size = 32
-var moving = false
-var speed = 10
+const tile_size: int = 32
+var moving: bool = false
+var speed: int = 10
 
 var forced_direction: Vector2 = Vector2.ZERO
-var last_direction = "down"
+var last_direction: String = "down"
+
+var is_colliding: bool = false
 var sliding_on_ice: bool = false
-var is_colliding = false
-#var can_tp = true
+var on_conveyor: bool = false
 
 @onready var sprite = $Sprite2D
 @onready var ray = $RayCast2D
@@ -66,32 +67,19 @@ func _physics_process(delta: float) -> void:
 
 	var conveyor_direction = get_conveyor_direction()
 	if conveyor_direction != Vector2.ZERO && !is_colliding: # if stepping on a conveyor belt and not colliding
+		on_conveyor = true
 		sliding_on_ice = false
 		forced_direction = conveyor_direction
 		
-		#animate(get_key_from_vector(forced_direction))
-		if forced_direction == Vector2.ZERO:
-			anim_tree.get("parameters/playback").travel("Idle")
-		else:
-			anim_tree.get("parameters/playback").travel("Move")
-			anim_tree.set("parameters/Idle/BlendSpace2D/blend_position", forced_direction)
-			anim_tree.set("parameters/Move/BlendSpace2D/blend_position", forced_direction)
-		
 		move(get_key_from_vector(forced_direction))
 		return
+	else:
+		on_conveyor = false
 
 	if sliding_on_ice:
 		# Keep sliding until not on ice
 		if is_on_ice():
-			
-			#animate(get_key_from_vector(forced_direction))
-			if forced_direction == Vector2.ZERO:
-				anim_tree.get("parameters/playback").travel("Idle")
-			else:
-				anim_tree.get("parameters/playback").travel("Move")
-				anim_tree.set("parameters/Idle/BlendSpace2D/blend_position", forced_direction)
-				anim_tree.set("parameters/Move/BlendSpace2D/blend_position", forced_direction)
-			
+			on_conveyor = false
 			move(get_key_from_vector(forced_direction))
 			return
 		else:
@@ -104,18 +92,13 @@ func _physics_process(delta: float) -> void:
 			forced_direction = inputs[direction] 
 			last_direction = direction
 			
-			#animate(direction)
-			if forced_direction == Vector2.ZERO:
-				anim_tree.get("parameters/playback").travel("Idle")
-			else:
-				anim_tree.get("parameters/playback").travel("Move")
-				anim_tree.set("parameters/Idle/BlendSpace2D/blend_position", forced_direction)
-				anim_tree.set("parameters/Move/BlendSpace2D/blend_position", forced_direction)
-			
+			animate(direction)
 			move(direction)
 			
 			if is_on_ice():
 				sliding_on_ice = true
+			if get_conveyor_direction() != Vector2.ZERO:
+				on_conveyor = true
 			return
 	
 	move_and_slide()
@@ -133,8 +116,8 @@ func move(direction):
 			
 			last_direction = direction
 			
-			#animate(direction)
-			
+			animate(direction)
+	
 			var tween = create_tween()
 			tween.tween_property(
 				self, # who/what it affects
@@ -144,6 +127,7 @@ func move(direction):
 			)
 			tween.tween_callback(move_false)
 		else:
+			on_conveyor = false
 			sliding_on_ice = false
 			is_colliding = true
 
@@ -153,24 +137,21 @@ func move_false():
 	
 	if is_on_ice():
 		sliding_on_ice = true
+		on_conveyor = false
 		if forced_direction != Vector2.ZERO:
 			move(get_key_from_vector(forced_direction))
+		else:
+			animate(get_key_from_vector(forced_direction))
 	else:
 		forced_direction == Vector2.ZERO
 		
-	#animate(last_direction)	
-	if forced_direction == Vector2.ZERO:
+	animate(last_direction)
+
+
+func animate(last_direction):
+	if !moving or (!is_colliding and (on_conveyor or sliding_on_ice)):
 		anim_tree.get("parameters/playback").travel("Idle")
+		anim_tree.set("parameters/Idle/BlendSpace2D/blend_position", forced_direction)
 	else:
 		anim_tree.get("parameters/playback").travel("Move")
-		anim_tree.set("parameters/Idle/BlendSpace2D/blend_position", forced_direction)
 		anim_tree.set("parameters/Move/BlendSpace2D/blend_position", forced_direction)
-	
-	
-
-
-#func animate(last_direction):
-	#if moving && get_conveyor_direction() == Vector2.ZERO && !is_on_ice():
-		#sprite.play("move_" + last_direction)
-	#else:
-		#sprite.play("idle_" + last_direction)
