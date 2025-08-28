@@ -24,6 +24,7 @@ var inputs = {
 
 @onready var map: TileMapLayer = $"../grass"
 @onready var ice: TileMapLayer = $"../ice"
+@onready var oneway: TileMapLayer = $"../oneway"
 @onready var conveyors = {
 	"right":  $"../conveyor_right",
 	"left": $"../conveyor_left",
@@ -125,7 +126,8 @@ func move(direction):
 		ray.target_position = inputs[direction] * tile_size
 		ray.force_raycast_update()
 		
-		if !ray.is_colliding(): # checks if front of character is passable or impassable
+		var cell = map.local_to_map(position + inputs[direction])
+		if !ray.is_colliding() or (oneway.get_cell_source_id(cell) != -1 and direction=="down"): # checks if front of character is passable or impassable
 			moving = true
 			is_colliding = false
 			
