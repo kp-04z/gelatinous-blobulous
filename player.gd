@@ -101,7 +101,7 @@ func _physics_process(delta: float) -> void:
 				on_conveyor = true
 			return
 	
-	move_and_slide()
+		move_and_slide()
 
 
 func move(direction):
@@ -109,20 +109,25 @@ func move(direction):
 		ray.target_position = inputs[direction] * tile_size
 		ray.force_raycast_update()
 		
-		var cell = map.local_to_map(position + inputs[direction])
-		if !ray.is_colliding() or (oneway.get_cell_source_id(cell) != -1 and direction=="down"): # checks if front of character is passable or impassable
+		var cell = map.local_to_map(position + inputs[direction] * tile_size)
+		var is_facing_oneway = oneway.get_cell_source_id(cell) != -1 and  direction == "down"
+		if !ray.is_colliding() or (is_facing_oneway): # checks if front of character is passable or impassable
+			var multiplier = 1
+			if is_facing_oneway:
+				multiplier = 2
+			
 			moving = true
 			is_colliding = false
 			
 			last_direction = direction
 			
 			animate(direction)
-	
+			
 			var tween = create_tween()
 			tween.tween_property(
 				self, # who/what it affects
 				'position', # property name
-				position + inputs[direction] * tile_size, # end position
+				position + inputs[direction] * tile_size * multiplier, # end position
 				0.25 # duration
 			)
 			tween.tween_callback(move_false)
